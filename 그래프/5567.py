@@ -36,6 +36,8 @@ import sys
 from collections import deque
 # 각각의 친구 스택이 쌓인게 3이상이여야한다
 # 나의 친구이자 친구의 친구인 놈들만 고른다
+# 나랑 친구인놈들이랑 그놈의 친구들만 고른다
+# 즉 check[i] 의 값이 1,2,3중에 하나여야한다. 나 or 내 친구 or 내 친구의 친구
 
 input = sys.stdin.readline
 
@@ -70,6 +72,7 @@ bfs(1)
 for i in range(2, n+1):
     if 0< check[i] <=3:
         cnt +=1
+        print(i)
 
 
 print(cnt)
