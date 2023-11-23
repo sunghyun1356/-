@@ -105,7 +105,7 @@ while True:
                 count += 1
 
     melt()
-    time += 1
+    time += 1 #한번 다 녹고나서 체크햊ㄴ다
 
     if count == 0:
         print(0)
