@@ -31,6 +31,7 @@ def find(x):
         parent[x] = find(parent[x]) 
     return parent[x]
 
+
 def union(a, b):
     a = find(a)
     b = find(b)
@@ -55,4 +56,5 @@ for i in range(1, m):
 print("YES")
 
     
+
     
