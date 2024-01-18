@@ -77,7 +77,9 @@ def solution(stones, k):
             answer = now_weight
             break
         
+        # 그 전의 돌에 있던 것의 다음것은 현재의 다음 것이고
         after[before[now_index]] = after[now_index]
+        # 지금기준 다음것에 해당하는 돌의 전의 것은 지금의 전것이다
         before[after[now_index]] = before[now_index]
 
     return answer
