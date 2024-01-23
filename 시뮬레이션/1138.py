@@ -41,7 +41,6 @@ m = list(map(int, input().split()))
 jool = [0] * n
 
 for i in range(n):
-    print(jool)
     tall = 0
     for j in range(n): # 현재 위치
         if tall == m[i] and jool[j] == 0:
