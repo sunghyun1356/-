@@ -46,6 +46,7 @@ def djisktra(i):
     dist = [99999] * (n + 1)
     heapq.heappush(heap, (i, 0))
     while heap:
+        print(heap)
         now, value = heapq.heappop(heap)
         if dist[now] < value:
             continue
