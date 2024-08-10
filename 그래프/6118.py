@@ -45,3 +45,5 @@ for num in final_result:
     if num[1] == temp:
         cnt+=1
 print(smallest,temp, cnt)
+
+# dict으로 만들어서 정렬을 해준다 key = lambda x :
