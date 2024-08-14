@@ -50,7 +50,6 @@ for i in range(1,n):
     elif i%2 == 0 and i!= n:
         explosion(graph)
         bomb_check(graph)
-        print(graph)
     elif i%2 ==0 and i==n:
         explosion(graph)
 final(graph)
