@@ -48,7 +48,6 @@ def main():
     r, c, t = map(int, input().split())
     graph = [list(map(int, input().split())) for _ in range(r)]
 
-    # 공기청정기 위치 찾기
     air_cleaner = []
     for i in range(r):
         if graph[i][0] == -1:
