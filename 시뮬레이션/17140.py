@@ -1,61 +1,51 @@
 import sys
 input = sys.stdin.readline
-from collections import Counter
 
-def checking(graph, r, c, k):
-    if graph[r][c] == k:
-        return True
+def check(arr, n, h):
+    for sj in range(1, n + 1):
+        j = sj
+        for i in range(1, h + 1):
+            if arr[i][j] == 1:
+                j += 1
+            elif arr[i][j - 1] == 1:
+                j -= 1
+        if j != sj:
+            return False
+    return True
+
+def dfs(arr, pos, current_cnt, start, max_cnt, total_positions, h):
+    if current_cnt == max_cnt:
+        return check(arr, len(arr[0]) - 2, h)
+
+    for j in range(start, total_positions):
+        ti, tj = pos[j]
+        if arr[ti][tj - 1] == 0 and arr[ti][tj] == 0 and arr[ti][tj + 1] == 0:
+            arr[ti][tj] = 1
+            if dfs(arr, pos, current_cnt + 1, j + 1, max_cnt, total_positions, h):
+                return True
+            arr[ti][tj] = 0
+
     return False
 
-def r_change(graph):
-    new_graph = []
-    for i in graph:
-        elem = set(i)
-        temp = []
-        new_temp = []
-        for j in elem:
-            if j == 0:
-                continue
-            cnt = i.count(j)
-            temp.append((j,cnt))
-        temp.sort(key= lambda x : (x[1], x[0]))
-
-        for k in temp:
-            new_temp.append(k[0])
-            new_temp.append(k[1])
-        new_temp = new_temp[:100]
-        new_graph.append(new_temp)
-    
-    max_len = max(map(len, new_graph))
-
-    for i in range(len(new_graph)):
-        while len(new_graph[i]) != max_len:
-            new_graph[i].append(0)
-    return new_graph
-
 def main():
-    r,c,k = map(int, input().split())
-    graph = [list(map(int, input().split())) for _ in range(3)]
-    r_len = len(graph)
-    c_len = len(graph[0])
-    
-    for i in range(101):
-        if graph[r-1][c-1] == k:
-            print(i)
-            break
-        if len(graph[0]) > len(graph):
-            graph = r_change(graph)
-        else:
-            graph = r_change(graph)
-        if i == 101:
-            print(-1)
-            
-    if r_len >= c_len:
-        graph = list(map(list, zip(*graph)))
-        r_change(graph)
-        graph = list(map(list, zip(*graph)))
-    else:
-        r_change(graph)
+    n, m, h = map(int, input().split())
+    arr = [[0] * (n + 2) for _ in range(h + 1)]
+    for _ in range(m):
+        ti, tj = map(int, input().split())
+        arr[ti][tj] = 1
+
+    pos = []
+    for i in range(1, h + 1):
+        for j in range(1, n):
+            if arr[i][j] == 0 and arr[i][j-1] == 0 and arr[i][j+1] == 0:
+                pos.append((i, j))
+    total_positions = len(pos)
+
+    for max_cnt in range(4):
+        if dfs(arr, pos, 0, 0, max_cnt, total_positions, h):
+            print(max_cnt)
+            return
+    print(-1)
 
 if __name__ == "__main__":
     main()
