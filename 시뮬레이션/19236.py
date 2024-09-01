@@ -36,7 +36,7 @@ def fish_change(shark_y, shark_x, fish_graph, fish_orders):
             fish[1] = fish_direction
         if temp == False:
             fish[1] = original_direction
-            
+
 def shark_way_dfs(shark_y, shark_x, fish_graph, fish_orders, current_sum):
     global max_sum
     current_sum += fish_graph[shark_y][shark_x][0]
@@ -75,7 +75,7 @@ def main():
     fish_orders = [f for f in fish_orders if f[0] != first_fish_number]
 
     shark_way_dfs(0, 0, fish_graph, fish_orders, first_fish_number)
-    print(max_sum)
+    print(max_sum-fish_graph[0][0][0])
 
 def solution():
     main()
