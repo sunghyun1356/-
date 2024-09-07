@@ -91,3 +91,124 @@
 # 1. 가장 인접한 칸이 많은 것 넣을 리스트
 # 2. 좋아하는 학생이 인접한 칸에 많은지를 확인
 # 3. 행, 열의 크기가 가장 작은 것으로 본다
+import sys
+from collections import Counter
+from collections import defaultdict
+
+n = int(input())
+friends = {}
+friend_order = []
+friend_graph = [[0] * n for _  in range(n)]
+dx = [1,-1,0,0]
+dy = [0,0,1,-1]
+
+for i in range(n**2):
+    friend = list(map(int, input().split()))
+    friends[friend[0]] = friend[1:]
+    friend_order.append(friend[0])
+
+def first_check(frined_number):
+
+    # 만약에 아예 비어있는 경우는 다 비어있는 공간 중에서 제일 작은 것을 체크
+    friend_location_candidate = []
+    friend_candidate = friends[frined_number]
+    
+    for i in range(n):
+        for j in range(n):
+            if friend_graph[i][j] in friend_candidate:
+                for k in range(4):
+                    ny = i + dy[k]
+                    nx = j + dx[k]
+                    if 0<=ny<n and 0<=nx<n:
+                        if friend_graph[ny][nx] == 0:
+                            friend_location_candidate.append((ny,nx))
+    if len(friend_location_candidate) == 0:
+        temp = True
+        for i in range(n):
+            for j in range(n):
+                if friend_graph[i][j] == 0:
+                    for k in range(4):
+                        ny = i + dy[k]
+                        nx = j + dx[k]
+                        if 0<=ny<n and 0<=nx<n:
+                            if friend_graph[ny][nx] != 0:
+                                temp = False
+                        else:
+                            temp = False
+                    if temp == True:
+                        friend_location_candidate.append((i,j))
+                        break
+            if temp == True:
+                break
+    frequency = Counter(friend_location_candidate)
+    print(friend_location_candidate)
+    max_count = max(frequency.values())
+    most_common = [item for item, count in frequency.items() if count == max_count]
+    print(most_common)
+    return most_common                       
+    
+
+def second_check(most_common):
+
+    count_dict = defaultdict(int)
+
+    for location in most_common:
+        y, x = location
+        local_count = 0
+        for i in range(4):
+            ny = y + dy[i]
+            nx = x + dx[i]
+            if 0 <= ny < n and 0 <= nx < n:
+                if friend_graph[ny][nx] == 0:
+                    local_count += 1
+        count_dict[(y, x)] = local_count
+
+    # 가장 높은 count 값을 찾기
+    max_count = max(count_dict.values(), default=0)
+
+    # 가장 높은 count 값을 가진 (y, x) 좌표들만 필터링
+    most_frequent_locations = [loc for loc, count in count_dict.items() if count == max_count]
+
+    return most_frequent_locations
+
+def third_check(most_injust_common):
+    minimum_y, minimum_x = 1e9,1e9
+    for location in most_injust_common:
+        y,x = location
+        if minimum_y > y:
+            minimum_y = y 
+            minimum_x = x
+        elif minimum_y == y:
+            if minimum_x > x:
+                 minimum_y = y
+                 minimum_x = x
+    return (minimum_y, minimum_x)
+
+# 각각 친구가 인접할 때 친한친구가 인접한 (거리가 1)인 거리에 앉는 친구의 수가 1이면 1, 2면 10, 3이면 100 4면 1000이된다
+def calculate_satisfaction(friend_graph):
+    satisfaction = 0
+    for i in range(n):
+        for j in range(n):
+            student = friend_graph[i][j]
+            if student != 0:
+                favorite_friends = friends[student]
+                count = 0
+                for k in range(4):
+                    ny, nx = i + dy[k], j + dx[k]
+                    if 0 <= ny < n and 0 <= nx < n and friend_graph[ny][nx] in favorite_friends:
+                        count += 1
+                satisfaction += 10 ** (count - 1) if count > 0 else 0
+    return satisfaction
+
+def main(friends, friends_order):
+    for fireind in friends_order:
+        a = first_check(fireind)
+        if len(a) > 1 or len(a)== 0:
+            a = second_check(a)
+            if len(a) > 1 or len(a) == 0:
+                a = third_check(a)
+        y,x = a[0]
+        friend_graph[y][x] = friend
+    return friend_graph
+friend_graph = main(friends, friend_order)
+calculate_satisfaction(friend_graph)
