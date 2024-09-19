@@ -12,7 +12,7 @@ def one_time(tries, i, start, order):
         elif hitter[order[start]] == 1:  # 안타
             if places[2]:  # 3루 주자가 있으면 득점
                 score += 1
-            places = [places[1], places[0], True]
+            places = [True, places[0], places[1]]
         elif hitter[order[start]] == 2:  # 2루타
             if places[2]:  # 3루 주자가 있으면 득점
                 score += 1
