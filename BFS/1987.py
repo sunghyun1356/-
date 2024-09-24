@@ -15,6 +15,7 @@ def BFS(x, y):
             ny = y + dy[i]
             if ((0 <= nx < R) and (0 <= ny < C)) and (board[nx][ny] not in ans):
                 q.add((nx,ny,ans + board[nx][ny]))
+                # max를 통해서 이게 최적인지를 업데이트 해준다
                 answer = max(answer, len(ans)+1)
 
 BFS(0, 0)
