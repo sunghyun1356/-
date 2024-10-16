@@ -1,0 +1,38 @@
+from itertools import combinations
+
+def solution(line):
+    stars = set()
+    stars_combinations = list(combinations(line, 2))
+    for star_combination in stars_combinations:
+        first, second = star_combination
+        a, b, c = first
+        d, e, f = second
+        
+        denominator = (a * e - b * d)
+        if denominator == 0:
+            continue
+        
+        x_numerator = (b * f - e * c)
+        y_numerator = (-1* a* f + c* d)
+        if x_numerator % denominator == 0 and y_numerator % denominator == 0:
+            x = x_numerator // denominator
+            y = y_numerator // denominator
+            stars.add((y, x))
+
+    stars = list(stars)
+    stars_y = sorted(stars, key=lambda x: x[0])
+    stars_x = sorted(stars, key=lambda x: x[1])
+    minimum_x, maximum_x = stars_x[0][1], stars_x[-1][1]
+    minimum_y, maximum_y = stars_y[0][0], stars_y[-1][0]
+    
+    result = []
+    for i in range(minimum_y, maximum_y +1):
+        s = ""
+        for j in range(minimum_x, maximum_x + 1):
+            if (i, j) in stars:
+                s += "*"
+            else:
+                s += "."
+        result.append(s)
+    result = result[::-1]
+    return result
